@@ -1,0 +1,20 @@
+/* Đảm bảo toàn bộ trang chiếm đủ chiều cao */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container của Home */
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Chiều cao 100% màn hình */
+  }
+  
+  /* VideoList sẽ chiếm hết không gian còn lại sau Header */
+  .video-list {
+    flex: 1; 
+    overflow-y: auto; /* Cho phép cuộn nếu danh sách quá dài */
+  }
+  

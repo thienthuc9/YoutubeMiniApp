@@ -1,6 +1,7 @@
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/Home/HomePage";
 import { FC } from "react";
-import RegisterPage from "./pages/RegisterPage";
+import RegisterPage from "./pages/Login/RegisterPage";
+import LoginPage from "./pages/Login/LoginPage";
 
 interface RouteType {
   path: string;
@@ -15,6 +16,10 @@ const routes: RouteType[] = [
   {
     path: "/register",
     main: RegisterPage,
+  },
+  {
+    path: "/login",
+    main: LoginPage,
   }
 ];
 
