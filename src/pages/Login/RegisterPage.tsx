@@ -1,16 +1,34 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useImmer } from "use-immer";
+import { AppDispatch, RootState } from "../../redux/store";
+import { registerUser } from "../../redux/slice/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [state, setState] = useImmer({
+    email: '',
+    password: '',
+    username: ''
+  })
+  const handleSubmit = async  (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ username, email, password });
-    alert("Đăng ký thành công! 🚀");
-  };
+    const resultAction = await dispatch(registerUser(state));
 
+    if (registerUser.fulfilled.match(resultAction)) {
+      navigate("/login");
+    }
+
+  };
+  const onChange = (type: keyof typeof state, value: string) => {
+    setState(draft => {
+      draft[type] = value;
+    });
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <h2 className="text-2xl font-bold mb-4">Đăng ký</h2>
@@ -19,8 +37,8 @@ const RegisterPage: React.FC = () => {
           <label className="block font-semibold">Tên người dùng</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={state.username}
+            onChange={(e) => onChange('username', e.target.value)}
             className="w-full border p-2 rounded"
             required
           />
@@ -29,8 +47,8 @@ const RegisterPage: React.FC = () => {
           <label className="block font-semibold">Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={state.email}
+            onChange={(e) => onChange('email', e.target.value)}
             className="w-full border p-2 rounded"
             required
           />
@@ -39,8 +57,8 @@ const RegisterPage: React.FC = () => {
           <label className="block font-semibold">Mật khẩu</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={state.password}
+            onChange={(e) => onChange('password', e.target.value)}
             className="w-full border p-2 rounded"
             required
           />

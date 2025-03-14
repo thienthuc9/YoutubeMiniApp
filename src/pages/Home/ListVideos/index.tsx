@@ -1,6 +1,5 @@
 import React from "react";
-import VideoCard from "../../../components/Video/VideoCard";
-
+import VideoCard from "../../../components/VideoCard";
 interface Video {
   id: string;
   title: string;
@@ -23,6 +22,12 @@ const videoData: Video[] = [
     },
     {
       id: "3",
+      title: "Next.js vs React - What to Choose?",
+      thumbnail: "https://img.youtube.com/vi/Qh3YoAuiS5M/mqdefault.jpg",
+      channel: "Dev Insights",
+    },
+    {
+      id: "4",
       title: "Next.js vs React - What to Choose?",
       thumbnail: "https://img.youtube.com/vi/Qh3YoAuiS5M/mqdefault.jpg",
       channel: "Dev Insights",

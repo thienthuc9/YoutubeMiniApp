@@ -1,20 +1,29 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useImmer } from "use-immer";
+import { AppDispatch } from "../../redux/store";
+import { loginUser } from "../../redux/slice/authSlice";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [state, setState] = useImmer({
+    email: '',
+    password: ''
+  })
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const onChange = (type: keyof typeof state, value: string) => {
+    setState(draft => {
+      draft[type] = value;
+    });
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Giả lập đăng nhập thành công
-    if (email === "test@example.com" && password === "123456") {
-      alert("Đăng nhập thành công! 🚀");
-      navigate("/"); // Chuyển về trang chủ
-    } else {
-      alert("Sai email hoặc mật khẩu! ❌");
+    const resultAction = await dispatch(loginUser({ email: state.email, password: state.password }));
+    if (loginUser.fulfilled.match(resultAction)) {
+      window.location.href = `${window.location.origin}`;
     }
   };
 
@@ -26,8 +35,8 @@ const LoginPage: React.FC = () => {
           <label className="block font-semibold">Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={state.email}
+            onChange={(e) => onChange('email', e.target.value)}
             className="w-full border p-2 rounded"
             required
           />
@@ -36,8 +45,8 @@ const LoginPage: React.FC = () => {
           <label className="block font-semibold">Mật khẩu</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={state.password}
+            onChange={(e) => onChange('password', e.target.value)}
             className="w-full border p-2 rounded"
             required
           />
