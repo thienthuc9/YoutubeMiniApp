@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { apiRequest } from "../services/apiServices";
 
 const VideoUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const token = localStorage.getItem("token");
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,12 +20,14 @@ const VideoUpload: React.FC = () => {
 
     try {
       // 📌 Bước 1: Lấy Signed URL từ BE
-      const { data } = await axios.get("http://localhost:5000/api/get-upload-url");
+      const data = await apiRequest<{ uploadUrl: string, filePath: string }>({
+        url: "http://localhost:5000/api/get-upload-url",
+        method: "GET",
+      });
 
       if (!data.uploadUrl || !data.filePath) {
         return alert("Không lấy được URL upload");
       }
-      console.log({ data })
       // 📌 Bước 2: Upload video lên Google Cloud Storage
       await axios.put(data.uploadUrl, file, {
         headers: { "Content-Type": "video/mp4" },
@@ -39,8 +43,11 @@ const VideoUpload: React.FC = () => {
 
       // 📌 Bước 3: Gửi URL về Backend để lưu vào DB
       const publicUrl = `https://storage.googleapis.com/app-yt-mini/${data.filePath}`;
-      await axios.post("http://localhost:5000/api/save-videos", { videoUrl: publicUrl, title: 'test' });
-
+      await apiRequest({
+        url: "http://localhost:5000/api/save-videos",
+        method: "POST",
+        data: { videoUrl: publicUrl, title: 'test' }
+      });
       alert("Upload thành công!");
       setFile(null);
       setUploadProgress(0);

@@ -5,7 +5,6 @@ import React from "react";
 
 const App: React.FC = () => {
   const token = localStorage.getItem("token");
-  console.log({token})
   return (
     <Router>
       <Routes>
