@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         <button>
           <span className="material-icons">notifications</span> {/* Icon thông báo */}
         </button>
-        <img className="header__avatar" src="https://via.placeholder.com/40" alt="User Avatar" />
+        <img onClick={() => negative("/profile")} className="header__avatar" src="https://via.placeholder.com/40" alt="User Avatar" />
       </div>
     </header>
   );

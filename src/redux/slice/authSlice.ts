@@ -43,9 +43,13 @@ export const registerUser = createAsyncThunk(
 // **Tạo action loginUser (Đăng nhập)**
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  async (
+    credentials: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await axios.post(`${API_URL}/login`, credentials);
+      console.log({ response });
       return response.data; // Giả sử API trả về { user, token }
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Đăng nhập thất bại");
@@ -91,6 +95,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.token = action.payload.token || null;
         localStorage.setItem("token", action.payload.token || ""); // Lưu token vào localStorage
+        //  window.location.href = `${window.location.origin}`
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
