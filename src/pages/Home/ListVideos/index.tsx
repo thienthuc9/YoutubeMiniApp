@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import VideoCard from "../../../components/VideoCard";
+import { AppDispatch } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { listVideo } from "../../../redux/slice/videoSlice";
 interface Video {
   id: string;
   title: string;
@@ -35,6 +38,12 @@ const videoData: Video[] = [
   ];
 
 const VideoList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+
+  useEffect(() => {
+      dispatch(listVideo());
+  }, [dispatch]);
   return (
     <div className="video-list">
       {videoData.map((video) => (
