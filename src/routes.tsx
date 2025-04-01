@@ -4,7 +4,7 @@ import RegisterPage from "./pages/Login/RegisterPage";
 import LoginPage from "./pages/Login/LoginPage";
 import UploadPage from "./pages/Upload" ;
 import Profile from "./pages/Profile";
-
+import VideoPageWrapper from "./components/Video/index";
 interface RouteType {
   path: string;
   main: FC;
@@ -38,6 +38,12 @@ const routes: RouteType[] = [
   {
     path: "/profile",
     main: Profile,
+    protected: true,
+
+  },
+  {
+    path: "/:id",
+    main: VideoPageWrapper,
     protected: true,
 
   }
