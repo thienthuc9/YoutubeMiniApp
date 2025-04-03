@@ -3,7 +3,8 @@ import { mapService } from "../../services/profileServices";
 
 // Định nghĩa kiểu dữ liệu cho user
 export interface User {
-  id?: number;
+  
+  id: number;
   username: string;
   email: string;
   avatar?: string;

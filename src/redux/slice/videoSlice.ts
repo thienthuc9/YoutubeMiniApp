@@ -7,13 +7,13 @@ export interface Videos {
   id?: number;
   title: string;
   thumbnail: string;
-  view?: number;
+  views?: number;
 }
 export interface VideosDetail {
   id?: number;
   title: string;
   thumbnail: string;
-  view?: number;
+  views?: number;
   url?: string;
   comments: Array<Comment>;
   likes:number
