@@ -26,6 +26,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [watchTime, setWatchTime] = useState<number>(0);
   const [like, setLikes] = useState<number>(activeRow.likes);
+  const [views, setViews] = useState<number>(activeRow.views);
   const [commentsTmp, setComments] = useState<Comment[]>(activeRow.comments);
   const [newComment, setNewComment] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
@@ -33,13 +34,13 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
   const hasReportedView = useRef<boolean>(false);
   useEffect(() => {
     dispatch(detailVideo(Number(videoId)));
-  
+
   }, [dispatch, videoId])
-  useEffect(()=>{
+  useEffect(() => {
     setLikes(activeRow.likes)
-    console.log(activeRow)
     setComments(activeRow.comments)
-  },[activeRow])
+    setViews(activeRow.views)
+  }, [activeRow])
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -53,12 +54,12 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
     const handleVideoEnd = () => {
       const duration = video.duration;
       const watchPercentage = (watchTime / duration) * 100;
+      console.log({ watchPercentage })
       if (!hasReportedView.current && watchPercentage >= 70) {
-        socket.emit("video_watched", { userId:user.id, videoId });
+        socket.emit("video_watched", { userId: user.id, videoId });
         hasReportedView.current = true;
       }
     };
-    console.log('first')
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("ended", handleVideoEnd);
 
@@ -77,6 +78,10 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
     socket.on(`update_comments:${videoId}`, (newComment: Comment) => {
       setComments((prev) => [...prev, newComment]);
     });
+    // Lắng nghe sự kiện cập nhật comment từ server
+    socket.on(`video_views_updated:${videoId}`, ({ views }: { views: number }) => {
+      setViews(views);
+    });
     return () => {
       socket.off(`update_likes:${videoId}`);
       socket.off(`update_comments:${videoId}`);
@@ -84,21 +89,20 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
   }, [videoId]);
   // Hàm gửi like qua Socket.io
   const handleLike = () => {
-    socket.emit("like_video", { userId:user.id, videoId });
+    socket.emit("like_video", { userId: user.id, videoId });
   };
 
   // Hàm gửi comment qua Socket.io
   const handleComment = () => {
     if (!newComment.trim()) return;
-    socket.emit("comment_video", { userId:user.id, videoId, text: newComment });
+    socket.emit("comment_video", { userId: user.id, videoId, text: newComment });
     setNewComment("");
   };
-  console.log(user);
   return (
     <div>
       {/* Video Player */}
       <video ref={videoRef} controls src={activeRow.url} />
-      <p>{activeRow.views}</p>
+      <p>{views}</p>
       {/* Hiển thị số like và nút like */}
       <p>👍 Likes: {like}</p>
       <button onClick={handleLike}>👍 Like</button>

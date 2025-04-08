@@ -13,7 +13,7 @@ export interface VideosDetail {
   id?: number;
   title: string;
   thumbnail: string;
-  views?: number;
+  views: number;
   url?: string;
   comments: Array<Comment>;
   likes:number
