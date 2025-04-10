@@ -41,6 +41,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
     setComments(activeRow.comments)
     setViews(activeRow.views)
   }, [activeRow])
+  console.log({ watchTime })
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -55,9 +56,8 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
       const duration = video.duration;
       const watchPercentage = (watchTime / duration) * 100;
       console.log({ watchPercentage })
-      if (!hasReportedView.current && watchPercentage >= 70) {
+      if (watchPercentage >= 70) {
         socket.emit("video_watched", { userId: user.id, videoId });
-        hasReportedView.current = true;
       }
     };
     video.addEventListener("timeupdate", handleTimeUpdate);
@@ -102,7 +102,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
     <div>
       {/* Video Player */}
       <video ref={videoRef} controls src={activeRow.url} />
-      <p>{views}</p>
+      <p>{views} Views</p>
       {/* Hiển thị số like và nút like */}
       <p>👍 Likes: {like}</p>
       <button onClick={handleLike}>👍 Like</button>
