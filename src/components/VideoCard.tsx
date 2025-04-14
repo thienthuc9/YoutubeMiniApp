@@ -18,7 +18,7 @@ const VideoCard: React.FC<VideoProps> = ({ id, title, thumbnail, views }) => {
       <img src={thumbnail} alt={title} className="thumbnail" />
       <div className="video-info">
         <h3>{title}</h3>
-        <p>{views}</p>
+        <p>{views} views</p>
       </div>
     </div>
   );
