@@ -57,8 +57,6 @@ const VideoUpload: React.FC = () => {
       alert("Lỗi khi upload video");
     }
   };
-  console.log(uploadProgress)
-
   return (
     <div className="flex flex-col items-center gap-4 p-5">
       <input type="file" accept="video/*" onChange={handleFileChange} className="border p-2" />
