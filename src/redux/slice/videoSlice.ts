@@ -32,6 +32,19 @@ const initialState: VideosState = {
   error: null,
   activeRow: {},
 };
+export const listVideoByUserId = createAsyncThunk(
+  "listVideoByUserId",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await mapService.getListVideosByUserId();
+      return response; // Trả về Videos[]
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "An error occurred"
+      );
+    }
+  }
+);
 export const listVideo = createAsyncThunk(
   "listVideo",
   async (_, { rejectWithValue }) => {
@@ -72,6 +85,22 @@ const videoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+     // **Xử lý get list by user Id**
+     .addCase(listVideoByUserId.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(
+      listVideoByUserId.fulfilled,
+      (state, action: PayloadAction<Videos[]>) => {
+        state.loading = false;
+        state.data = action.payload; //  window.location.href = `${window.location.origin}`
+      }
+    )
+    .addCase(listVideoByUserId.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
       // **Xử lý get list**
       .addCase(listVideo.pending, (state) => {
         state.loading = true;

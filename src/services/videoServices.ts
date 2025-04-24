@@ -22,4 +22,11 @@ export const mapService = {
     });
     return data;
   },
+  getListVideosByUserId: async () => {
+    const data = await apiRequest<responseVideosList>({
+      url: `http://localhost:5000/api/get-videos-by-user`,
+      method: "GET",
+    });
+    return data.videos;
+  },
 };

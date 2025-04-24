@@ -7,6 +7,7 @@ const VideoUpload: React.FC = () => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const token = localStorage.getItem("token");
+  const [isUploading, setIsUploading] = useState(false);
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +18,7 @@ const VideoUpload: React.FC = () => {
 
   const uploadVideo = async () => {
     if (!file) return alert("Vui lòng chọn video!");
+    setIsUploading(true);
 
     try {
       // 📌 Bước 1: Lấy Signed URL từ BE
@@ -52,6 +54,7 @@ const VideoUpload: React.FC = () => {
       setFile(null);
       setUploadProgress(0);
       setVideoUrl(publicUrl)
+      setIsUploading(false);
     } catch (error) {
       console.error("Upload thất bại", error);
       alert("Lỗi khi upload video");
@@ -60,7 +63,7 @@ const VideoUpload: React.FC = () => {
   return (
     <div className="flex flex-col items-center gap-4 p-5">
       <input type="file" accept="video/*" onChange={handleFileChange} className="border p-2" />
-      <button onClick={uploadVideo} className="bg-blue-500 text-white px-4 py-2 rounded">
+      <button onClick={uploadVideo} disabled={isUploading} className="bg-blue-500 text-white px-4 py-2 rounded">
         Upload
       </button>
 
