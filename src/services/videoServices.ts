@@ -29,4 +29,11 @@ export const mapService = {
     });
     return data.videos;
   },
+  removeVideos : async (params:paramsDetailVideo) => {
+    const data = await apiRequest({
+      url: `http://localhost:5000/api/remove-videos/${params.id}`,
+      method: "PUT",
+    });
+    return data;
+  },
 };

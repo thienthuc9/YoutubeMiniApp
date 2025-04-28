@@ -4,6 +4,7 @@ import { logout } from "../../redux/slice/authSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import { listVideoByUserId, reset } from "../../redux/slice/videoSlice";
 import VideoCard from "../../components/VideoCard";
+import { mapService } from "../../services/videoServices";
 interface Video {
   id: string;
   title: string;
@@ -27,7 +28,23 @@ const Profile: React.FC = () => {
       dispatch(reset()); // Đặt trong một arrow function
     };
   }, [dispatch]);
-  console.log({ data })
+
+  const deleteVideo = async (videoId: string) => {
+    try {
+      const confirmed = window.confirm("Bạn có chắc muốn xóa video này?");
+      if (!confirmed) return;
+
+      const res = await mapService.removeVideos({ id: Number(videoId) });
+      console.log(res)
+
+      alert("Đã xóa video thành công!");
+      dispatch(listVideoByUserId());
+      // Cập nhật UI sau khi xóa (ví dụ refetch list)
+    } catch (error) {
+      console.error("Xóa video thất bại", error);
+      alert("Lỗi khi xóa video");
+    }
+  };
   return (
     <div>
       Profile
@@ -35,7 +52,10 @@ const Profile: React.FC = () => {
       <div>Video của bạn</div>
       <div className="video-list">
         {data.map((video) => (
-          <VideoCard {...video} />
+          <>
+            <VideoCard {...video} />
+            <button onClick={() => deleteVideo((video.id))}>Delete</button>
+          </>
         ))}
       </div>
     </div>
