@@ -8,6 +8,7 @@ const VideoUpload: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const token = localStorage.getItem("token");
   const [isUploading, setIsUploading] = useState(false);
+  const [title,setTitle] = useState<string>("");
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +16,9 @@ const VideoUpload: React.FC = () => {
       setFile(e.target.files[0]);
     }
   };
-
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    setTitle(e.target.value);
+  }
   const uploadVideo = async () => {
     if (!file) return alert("Vui lòng chọn video!");
     setIsUploading(true);
@@ -48,7 +51,7 @@ const VideoUpload: React.FC = () => {
       await apiRequest({
         url: "http://localhost:5000/api/save-videos",
         method: "POST",
-        data: { videoUrl: publicUrl, title: 'test' }
+        data: { videoUrl: publicUrl, title: title }
       });
       alert("Upload thành công!");
       setFile(null);
@@ -62,6 +65,10 @@ const VideoUpload: React.FC = () => {
   };
   return (
     <div className="flex flex-col items-center gap-4 p-5">
+      <div>
+        <span>Title</span>
+        <input type="text" onChange={handleChangeText} value={title}></input>
+      </div>
       <input type="file" accept="video/*" onChange={handleFileChange} className="border p-2" />
       <button onClick={uploadVideo} disabled={isUploading} className="bg-blue-500 text-white px-4 py-2 rounded">
         Upload
