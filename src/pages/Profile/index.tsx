@@ -48,7 +48,6 @@ const Profile: React.FC = () => {
   return (
     <div>
       Profile
-      <button onClick={handleLogout}>Logout</button>
       <div>Video của bạn</div>
       <div className="video-list">
         {data.map((video) => (
@@ -58,7 +57,10 @@ const Profile: React.FC = () => {
           </>
         ))}
       </div>
+      <button onClick={handleLogout}>Logout</button>
+
     </div>
+    
   );
 };
 
