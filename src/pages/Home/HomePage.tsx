@@ -8,7 +8,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="home-container">
       <Header />
-      <h1>Danh sách Video</h1>
+      <h1 style={{ marginTop: '70px' }}>Danh sách Video</h1>
       <VideoList />
     </div>
   );
