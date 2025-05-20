@@ -6,7 +6,7 @@ import { listVideo, reset } from "../../../redux/slice/videoSlice";
 interface Video {
   id: string;
   title: string;
-  thumbnail: string;
+  url: string;
   views: number;
 }
 

@@ -99,31 +99,56 @@ const VideoPage: React.FC<VideoPageProps> = ({ videoId }) => {
     setNewComment("");
   };
   return (
-    <div>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
       {/* Video Player */}
-      <video ref={videoRef} controls src={activeRow.url} />
-      <p>{views} Views</p>
-      {/* Hiển thị số like và nút like */}
-      <p>👍 Likes: {like}</p>
-      <button onClick={handleLike}>👍 Like</button>
+      <video
+        ref={videoRef}
+        controls
+        src={activeRow.url}
+        className="w-full rounded-lg shadow-lg"
+      />
 
-      {/* Phần hiển thị comment */}
-      <div>
-        <h3>Comments</h3>
-        <ul>
+      {/* Views và Like */}
+      <div className="flex items-center justify-between text-gray-600 text-sm">
+        <p>{views} views</p>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleLike}
+            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
+          >
+            👍{like} Like
+          </button>
+        </div>
+      </div>
+
+      {/* Comment Section */}
+      <div className="pt-4 border-t">
+        <h3 className="text-lg font-semibold mb-2 text-gray-800">💬 Comments : {`(${commentsTmp?.length})`} </h3>
+
+        <ul className="space-y-2 mb-4">
           {commentsTmp?.map((c, idx) => (
-            <li key={idx}>
-              <strong>User {c.user_id}:</strong> {c.content}
+            <li key={idx} className="bg-gray-100 p-3 rounded-lg">
+              <strong className="text-blue-600">User {c.user_id}</strong>:
+              <span className="ml-2 text-black">{c.content}</span>
             </li>
           ))}
         </ul>
-        <input
-          type="text"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment..."
-        />
-        <button onClick={handleComment}>💬 Comment</button>
+
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment..."
+            className="flex-1 border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleComment}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          >
+            💬 Comment
+          </button>
+        </div>
       </div>
     </div>
   );

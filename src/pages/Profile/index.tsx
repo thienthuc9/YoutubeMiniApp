@@ -8,7 +8,7 @@ import { mapService } from "../../services/videoServices";
 interface Video {
   id: string;
   title: string;
-  thumbnail: string;
+  url: string;
   views: number;
 }
 const Profile: React.FC = () => {

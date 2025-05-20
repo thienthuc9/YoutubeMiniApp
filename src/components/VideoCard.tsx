@@ -4,18 +4,21 @@ import { useNavigate } from "react-router-dom";
 interface VideoProps {
   id: string;
   title: string;
-  thumbnail: string;
+  url: string;
   views: number;
 }
 
-const VideoCard: React.FC<VideoProps> = ({ id, title, thumbnail, views }) => {
+const VideoCard: React.FC<VideoProps> = ({ id, title, url, views }) => {
   const navigate = useNavigate();
-  const handleClick = ()=>{
+  const handleClick = () => {
     navigate(`/${id}`)
   }
   return (
     <div key={id} onClick={handleClick} className="video-card">
-      <img src={thumbnail} alt={title} className="thumbnail" />
+      <video
+        src={url}
+        className="w-96 h-72 rounded-lg shadow-lg"
+      />
       <div className="video-info">
         <h3>{title}</h3>
         <p>{views} views</p>

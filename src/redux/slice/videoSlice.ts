@@ -6,7 +6,7 @@ import { Comment } from "../../components/Video/DetailVideo";
 export interface Videos {
   id?: number;
   title: string;
-  thumbnail: string;
+  url: string;
   views?: number;
 }
 export interface VideosDetail {
